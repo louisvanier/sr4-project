@@ -40,7 +40,7 @@ class HackingProcess
     @hacker.actual_skill_rating(Skills::HACKING) + @hacker.actual_attribute_rating(Attributes::LOGIC) + @hacker.hot_sim_bonus
   end
 
-  def hacking_limit_pool_limit
+  def hacking_dice_pool_limit
     @hacker.get_program_rating(MatrixProgram::EXPLOIT)
   end
 

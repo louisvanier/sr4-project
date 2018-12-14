@@ -1,12 +1,29 @@
 class Decker
-  attr_accessor :skills, :attributes, :home_node, :interface_mode, :programs
+  include RunsPrograms
+  include CanCybercombat
 
-  def initialize(skills:, attributes:, home_node:, interface_mode: InterfaceMode::HOT_SIM, programs: [])
-    @skills = skills
-    @attributes = attributes
-    @home_node = home_node
-    @interface_mode = interface_mode
-    @programs = programs
+  attr_accessor :skills, :attributes, :home_node, :interface_mode, :programs, :matrix_damage_taklen
+
+  delegate :actual_device_rating, to: :home_node
+
+  class << self
+    def from_node(home_node:, skills:, attributes:, interface_mode: InterfaceMode::HOT_SIM, programs: [])
+      decker = Decker.new(skills: skills, home_node: home_node, attributes: attributes, interface_mode: interface_mode, programs: programs)
+      home_node.decker = decker
+      decker
+    end
+  end
+
+  def run_program(program)
+    raise MatrixNode::NoSuchProgramError unless program = home_node.programs.find { |prog| prog == program }
+    programs << program
+    home_node.programs.delete(program)
+  end
+
+  def stop_program(program)
+    raise MatrixNode::NoSuchProgramError unless program = programs.find { |prog| prog == program }
+    programs.delete(program)
+    home_node.programs << program
   end
 
   def actual_skill_rating(skill)
@@ -21,8 +38,13 @@ class Decker
     @interface_mode == InterfaceMode::HOT_SIM ? 2 : 0
   end
 
-  def get_program_rating(program_name)
-    prog = programs.find { |p| p.program_name == program_name }
-    (prog&.rating || 0).clamp(0, home_node.actual_response
+  private
+
+  def initialize(skills:, attributes:, home_node:, interface_mode: InterfaceMode::HOT_SIM, programs: [])
+    @skills = skills
+    @attributes = attributes
+    @home_node = home_node
+    @interface_mode = interface_mode
+    @programs = programs
   end
 end

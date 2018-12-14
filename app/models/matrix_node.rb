@@ -1,36 +1,36 @@
 class MatrixNode
+  class AlreadySlavedError <  StandardError; end
+  class NoSuchProgramError < StandardError; end
+  include Encryptable
+
   ACTIVE_MODE = 'active'
   PASSIVE_MODE = 'passive'
   HIDDEN_MODE = 'hidden'
 
-  AlreadySlavedError <  Error
   class << self
     attr_reader :response_overload_factor
   end
-  attr_accessor :response,
-    :signal,
-    :firewall,
-    :matrix_system,
+
+  attr_accessor :device_attributes,
     :icons,
     :encryption_rating,
-    :on_alert
+    :alert_status,
+    :decker,
+    :physical_position
 
   attr_reader :device_mode
 
-  # should never be instantiated
   def initialize(**attrs)
-    @response = attrs[:response] || attrs[:device_rating]
-    @signal = attrs[:signal] || attrs[:device_rating]
-    @matrix_system = attrs[:matrix_system] || attrs[:device_rating]
-    @firewall = attrs[:firewall] || attrs[:device_rating]
+    @device_attributes = {}
+    @device_attributes[DeviceAttribute::RESPONSE] = attrs[:response] || attrs[:device_rating]
+    @device_attributes[DeviceAttribute::SIGNAL] = attrs[:signal] || attrs[:device_rating]
+    @device_attributes[DeviceAttribute::SYSTEM] = attrs[:matrix_system] || attrs[:device_rating]
+    @device_attributes[DeviceAttribute::FIREWALL] = attrs[:firewall] || attrs[:device_rating]
     @icons = attrs[:icons] || []
     @encryption_rating = attrs[:encryption_rating]
     @device_mode = attrs[:device_mode] || PASSIVE_MODE
-
-  end
-
-  def on_alert?
-    @on_alert
+    @alert_status = attrs[:alert_status] || AlertStatus::NO_ALERT
+    @physical_position = attrs[:physical_position] || [0, 0]
   end
 
   def hidden?
@@ -74,20 +74,38 @@ class MatrixNode
   end
 
   def running_programs_rating
-    programs.select(&:loaded).sum(&:rating) + agents.sum { |a| a.programs.sum(&:rating) }
+    agents.sum(&:total_programs_rating) + (decker&.total_programs_rating || 0)
   end
 
-  def actual_response
-    response - (running_programs_rating / (self.class.response_overload_factor * response))
+  def get_device_rating(device_attribute)
+    @device_attributes[:device_attribute]
   end
 
-  def actual_firewall
-    firewall + on_alert? ? 4 : 0
+  def actual_device_rating(device_attribute)
+    send("actual_#{device_attribute}")
   end
 
   def get_program_rating(program_name)
     prog = programs.find { |p| p.program_name == program_name }
     return 0 unless prog
     prog.rating.clamp(0, actual_response)
+  end
+
+  private
+
+  def actual_response
+    @device_attributes[DeviceAttribute::RESPONSE] - (running_programs_rating / (self.class.response_overload_factor * @device_attributes[DeviceAttribute::RESPONSE]))
+  end
+
+  def actual_firewall
+    @device_attributes[DeviceAttribute::FIREWALL] + AlertStatus::FIREWALL_BONUS[alert_status]
+  end
+
+  def actual_system
+    @device_attributes[DeviceAttribute::SYSTEM].clamp(0, actual_response)
+  end
+
+  def actual_signal
+    @device_attributes[DeviceAttribute::SIGNAL]
   end
 end

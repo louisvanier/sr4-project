@@ -1,10 +1,15 @@
 module AgentProgram
-  attr_accessor :programs, :pilot_rating, :resident_node
+  include RunsPrograms
+  include CanCybercombat
 
-  def initialize(programs:, pilot_rating:, resident_node:)
+  attr_accessor :programs, :pilot_rating, :home_node, :matrix_damage_taklen
+
+  delegate :actual_device_rating, to: :home_node
+
+  def initialize(programs:, pilot_rating:, home_node:)
     @programs = programs
     @pilot_rating = pilot_rating
-    @resident_node = resident_node
+    @home_node = home_node
   end
 
   def actual_skill_rating(_)
@@ -19,8 +24,7 @@ module AgentProgram
     2
   end
 
-  def get_program_rating(program_node)
-    prog = programs.find { |p| p.program_name == program_name }
-    (prog&.rating || 0).clamp(0, resident_node.actual_response)
+  def interface_mode
+    InterfaceMode::HOT_SIM
   end
 end
