@@ -1,5 +1,6 @@
 class MatrixNode
   class AlreadySlavedError <  StandardError; end
+  class AlreadySubscribedError < StandardError; end
   class NoSuchProgramError < StandardError; end
   include Encryptable
 
@@ -27,6 +28,7 @@ class MatrixNode
     @device_attributes[DeviceAttribute::SYSTEM] = attrs[:matrix_system] || attrs[:device_rating]
     @device_attributes[DeviceAttribute::FIREWALL] = attrs[:firewall] || attrs[:device_rating]
     @icons = attrs[:icons] || []
+    @running_programs = attrs[:running_programs] || []
     @encryption_rating = attrs[:encryption_rating]
     @device_mode = attrs[:device_mode] || PASSIVE_MODE
     @alert_status = attrs[:alert_status] || AlertStatus::NO_ALERT
@@ -58,8 +60,12 @@ class MatrixNode
   end
 
   def subscribe_to(node:, slaved: false, wired: false)
-    if slaved && subscriptions_to_others.any? { |s| s.slaved?}
+    if subscriptions_to_others.any? { |s| s.slaved?}
       raise AlreadySlavedError
+    end
+
+    if subscriptions_to_others.any? { |s| s.destination_node == node }
+      raise AlreadySubscribedError
     end
 
     subscription = NodeSubscription.new(
@@ -73,12 +79,16 @@ class MatrixNode
     node.icons << subscription
   end
 
-  def running_programs_rating
+  def user_programs_rating
     agents.sum(&:total_programs_rating) + (decker&.total_programs_rating || 0)
   end
 
+  def total_programs_rating
+    user_programs_rating + @running_programs.sum(&:rating)
+  end
+
   def get_device_rating(device_attribute)
-    @device_attributes[:device_attribute]
+    @device_attributes[device_attribute]
   end
 
   def actual_device_rating(device_attribute)
@@ -94,7 +104,7 @@ class MatrixNode
   private
 
   def actual_response
-    @device_attributes[DeviceAttribute::RESPONSE] - (running_programs_rating / (self.class.response_overload_factor * @device_attributes[DeviceAttribute::RESPONSE]))
+    @device_attributes[DeviceAttribute::RESPONSE] - (total_programs_rating / calculated_overload_factor)
   end
 
   def actual_firewall
@@ -107,5 +117,9 @@ class MatrixNode
 
   def actual_signal
     @device_attributes[DeviceAttribute::SIGNAL]
+  end
+
+  def calculated_overload_factor
+    self.class.response_overload_factor * @device_attributes[DeviceAttribute::RESPONSE]
   end
 end

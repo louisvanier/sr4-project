@@ -5,7 +5,7 @@ class AlertStatus
 
   FIREWALL_BONUS = {
     NO_ALERT => 0,
-    RESTRICTED_ALERT => 4,
-    GENERAL_ALERT => 0
+    RESTRICTED_ALERT => 0,
+    FULL_ALERT => 4
   }
 end

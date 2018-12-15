@@ -1,4 +1,4 @@
-module AgentProgram
+class AgentProgram
   include RunsPrograms
   include CanCybercombat
 
@@ -13,15 +13,19 @@ module AgentProgram
   end
 
   def actual_skill_rating(_)
-    pilot_rating.clamp(0, resident_node.actual_response)
+    pilot_rating.clamp(0, home_node.actual_device_attribute(DeviceAttribtue::RESPONSE))
   end
 
   def actual_attribute_rating(_)
-    pilot_rating.clamp(0, resident_node.actual_response
+    pilot_rating.clamp(0, home_node.actual_device_attribute(DeviceAttribtue::RESPONSE))
   end
 
   def hot_sim_bonus
     2
+  end
+
+  def nodes_present_in
+    [home_node]
   end
 
   def interface_mode

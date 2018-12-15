@@ -2,7 +2,7 @@ class Decker
   include RunsPrograms
   include CanCybercombat
 
-  attr_accessor :skills, :attributes, :home_node, :interface_mode, :programs, :matrix_damage_taklen
+  attr_accessor :skills, :attributes, :home_node, :interface_mode, :programs, :matrix_damage_taken, :meat_world_initiative_passes, :subscriptions, :stun_damage_taken, :physical_damage_taken
 
   delegate :actual_device_rating, to: :home_node
 
@@ -36,6 +36,10 @@ class Decker
 
   def hot_sim_bonus
     @interface_mode == InterfaceMode::HOT_SIM ? 2 : 0
+  end
+
+  def nodes_present_in
+    [home_node] << subscriptions.map { |sub| sub.destination_node }
   end
 
   private

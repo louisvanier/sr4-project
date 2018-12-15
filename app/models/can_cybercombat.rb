@@ -16,7 +16,7 @@ module CanCybercombat
     pool
   end
 
-  def get_matrix_initiative
+  def matrix_initiative
     case interface_mode
     when InterfaceMode::AR
       actual_attribute_rating(Attributes::REACTION) + actual_attribute_rating(Attributes::INTUITION)
@@ -24,6 +24,17 @@ module CanCybercombat
       rating = actual_device_rating(DeviceAttribute::RESPONSE) + actual_attribute_rating(Attributes::INTUITION)
       rating += 1 if interface_mode == InterfaceMode::HOT_SIM and is_a?(Decker)
       rating
+    end
+  end
+
+  def matrix_initiative_passes
+    case interface_mode
+    when InterfaceMode::AR
+      meat_world_initiative_passes
+    when InterfaceMode::COLD_SIM
+      2
+    when InterfaceMode::HOT_SIM
+      3
     end
   end
 end
