@@ -11,22 +11,6 @@ class MatrixNodeTest < ActiveSupport::TestCase
     end
   end
 
-  test '#programs returns only icons that are of type MatrixProgram' do
-    prog = MatrixProgram.new(program_name: MatrixProgram::ATTACK, rating: 3)
-    other_node = MobileNode.new(device_rating: 3)
-    agent = AgentProgram.new(programs: [], pilot_rating: 3, home_node: other_node)
-    node = MobileNode.new(device_rating: 3, icons: [prog, agent])
-    assert_equal [prog], node.programs
-  end
-
-  test '#agents returns only icons that are of type AgentProgram' do
-    prog = MatrixProgram.new(program_name: MatrixProgram::ATTACK, rating: 3)
-    other_node = MobileNode.new(device_rating: 3)
-    agent = AgentProgram.new(programs: [], pilot_rating: 3, home_node: other_node)
-    node = MobileNode.new(device_rating: 3, icons: [prog, agent])
-    assert_equal [agent], node.agents
-  end
-
   test '#subscriptions_to_self returns only subscriptions from other nodes to self' do
     node1 = MobileNode.new(device_rating: 3)
     node2 = MobileNode.new(device_rating: 3)
@@ -95,9 +79,8 @@ class MatrixNodeTest < ActiveSupport::TestCase
   test '#user_programs_rating returns the sum of agents programs and deckers programs' do
     node1 = MobileNode.new(device_rating: 3)
     agent = AgentProgram.new(programs: [MatrixProgram.new(program_name: MatrixProgram::ATTACK, rating: 3)], pilot_rating: 3, home_node: node1)
-    node1.icons << agent
-    decker = Decker.new(home_node: node1, programs: [MatrixProgram.new(program_name: MatrixProgram::ATTACK, rating: 3)], skills: [], attributes: [])
-    node1.decker = decker
+    node1.agents << agent
+    Decker.from_node(home_node: node1, programs: [MatrixProgram.new(program_name: MatrixProgram::ATTACK, rating: 3)], skills: [], attributes: [])
 
     assert_equal 6, node1.user_programs_rating
   end
@@ -105,7 +88,7 @@ class MatrixNodeTest < ActiveSupport::TestCase
   test '#user_programs_rating defaults to 0 for decker programs if there are none originating from that node' do
     node1 = MobileNode.new(device_rating: 3)
     agent = AgentProgram.new(programs: [MatrixProgram.new(program_name: MatrixProgram::ATTACK, rating: 3)], pilot_rating: 3, home_node: node1)
-    node1.icons << agent
+    node1.agents << agent
 
     assert_equal 3, node1.user_programs_rating
   end
@@ -121,9 +104,9 @@ class MatrixNodeTest < ActiveSupport::TestCase
   test '#user_programs_rating properly sums the rating of all agent programs running on that node' do
     node1 = MobileNode.new(device_rating: 3)
     agent = AgentProgram.new(programs: [MatrixProgram.new(program_name: MatrixProgram::ATTACK, rating: 3)], pilot_rating: 3, home_node: node1)
-    node1.icons << agent
+    node1.agents << agent
     agent2 = AgentProgram.new(programs: [MatrixProgram.new(program_name: MatrixProgram::ATTACK, rating: 3)], pilot_rating: 3, home_node: node1)
-    node1.icons << agent2
+    node1.agents << agent2
 
     assert_equal 6, node1.user_programs_rating
   end
@@ -154,26 +137,26 @@ class MatrixNodeTest < ActiveSupport::TestCase
   end
 
   test '#actual_device_rating returns the modified response if overloaded by running programs (MobileNode: 4x Response)' do
-    node1 = MobileNode.new(device_rating: 1, running_programs: [MatrixProgram.new(program_name: 'abc', rating: 3)])
+    node1 = MobileNode.new(device_rating: 1, programs: [MatrixProgram.new(program_name: 'abc', rating: 3)])
     assert_equal 1, node1.actual_device_rating(DeviceAttribute::RESPONSE)
-    node1.running_programs << MatrixProgram.new(program_name: 'abc', rating: 3)
-    assert_equal 6, node1.total_programs_rating
+    node1.programs << MatrixProgram.new(program_name: 'abc', rating: 3)
+    assert_equal 6, node1.running_programs_rating
     assert_equal 0, node1.actual_device_rating(DeviceAttribute::RESPONSE)
   end
 
   test '#actual_device_rating returns the modified response if overloaded by running programs (DesktopNode: 6x Response)' do
-    node1 = DesktopNode.new(device_rating: 1, running_programs: [MatrixProgram.new(program_name: 'abc', rating: 4)])
+    node1 = DesktopNode.new(device_rating: 1, programs: [MatrixProgram.new(program_name: 'abc', rating: 4)])
     assert_equal 1, node1.actual_device_rating(DeviceAttribute::RESPONSE)
-    node1.running_programs << MatrixProgram.new(program_name: 'abc', rating: 4)
-    assert_equal 8, node1.total_programs_rating
+    node1.programs << MatrixProgram.new(program_name: 'abc', rating: 4)
+    assert_equal 8, node1.running_programs_rating
     assert_equal 0, node1.actual_device_rating(DeviceAttribute::RESPONSE)
   end
 
   test '#actual_device_rating returns the modified response if overloaded by running programs (NexusNode: 8x Response)' do
-    node1 = NexusNode.new(device_rating: 1, running_programs: [MatrixProgram.new(program_name: 'abc', rating: 6)])
+    node1 = NexusNode.new(device_rating: 1, programs: [MatrixProgram.new(program_name: 'abc', rating: 6)])
     assert_equal 1, node1.actual_device_rating(DeviceAttribute::RESPONSE)
-    node1.running_programs << MatrixProgram.new(program_name: 'abc', rating: 6)
-    assert_equal 12, node1.total_programs_rating
+    node1.programs << MatrixProgram.new(program_name: 'abc', rating: 6)
+    assert_equal 12, node1.running_programs_rating
     assert_equal 0, node1.actual_device_rating(DeviceAttribute::RESPONSE)
   end
 

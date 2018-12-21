@@ -12,7 +12,7 @@ class DeckerTest < ActiveSupport::TestCase
 
   test '#run_program adds the program to the decker running programs' do
     prog = MatrixProgram.new(program_name: MatrixProgram::ATTACK, rating: 3)
-    node = MobileNode.new(device_rating: 3, icons: [prog])
+    node = MobileNode.new(device_rating: 3, programs: [prog])
     decker = Decker.from_node(home_node: node, skills: {}, attributes: {})
     decker.run_program(prog)
     assert_equal [prog], decker.programs
@@ -20,7 +20,7 @@ class DeckerTest < ActiveSupport::TestCase
 
   test '#run_program removes the program from the node loaded programs' do
     prog = MatrixProgram.new(program_name: MatrixProgram::ATTACK, rating: 3)
-    node = MobileNode.new(device_rating: 3, icons: [prog])
+    node = MobileNode.new(device_rating: 3, programs: [prog])
     decker = Decker.from_node(home_node: node, skills: {}, attributes: {})
     decker.run_program(prog)
     assert_nil decker.home_node.programs.find { |p| p == prog }

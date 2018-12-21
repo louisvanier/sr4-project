@@ -17,13 +17,13 @@ class Decker
   def run_program(program)
     raise MatrixNode::NoSuchProgramError unless program = home_node.programs.find { |prog| prog == program }
     programs << program
-    home_node.icons.delete(program)
+    home_node.programs.delete(program)
   end
 
   def stop_program(program)
     raise MatrixNode::NoSuchProgramError unless program = programs.find { |prog| prog == program }
     programs.delete(program)
-    home_node.icons << program
+    home_node.programs << program
   end
 
   def actual_skill_rating(skill)

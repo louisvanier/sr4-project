@@ -1,8 +1,10 @@
 class MatrixNode
+  include Encryptable
+  include RunsPrograms
+
   class AlreadySlavedError <  StandardError; end
   class AlreadySubscribedError < StandardError; end
   class NoSuchProgramError < StandardError; end
-  include Encryptable
 
   ACTIVE_MODE = 'active'
   PASSIVE_MODE = 'passive'
@@ -12,48 +14,56 @@ class MatrixNode
     attr_reader :response_overload_factor
   end
 
-  attr_accessor :device_attributes,
-    :icons,
+  attr_accessor :decker
+
+  attr_reader :device_attributes,
+    :device_mode,
+    :loaded_programs,
+    :programs,
+    :agents,
+    :subscriptions,
+    :files,
     :encryption_rating,
     :alert_status,
-    :decker,
-    :physical_position,
-    :running_programs
+    :physical_position
 
-  attr_reader :device_mode
-
-  def initialize(**attrs)
+  def initialize(**attributes)
     @device_attributes = {}
-    @device_attributes[DeviceAttribute::RESPONSE] = attrs[:response] || attrs[:device_rating]
-    @device_attributes[DeviceAttribute::SIGNAL] = attrs[:signal] || attrs[:device_rating]
-    @device_attributes[DeviceAttribute::SYSTEM] = attrs[:matrix_system] || attrs[:device_rating]
-    @device_attributes[DeviceAttribute::FIREWALL] = attrs[:firewall] || attrs[:device_rating]
-    @icons = attrs[:icons] || []
-    @running_programs = attrs[:running_programs] || []
-    @encryption_rating = attrs[:encryption_rating]
-    @device_mode = attrs[:device_mode] || PASSIVE_MODE
-    @alert_status = attrs[:alert_status] || AlertStatus::NO_ALERT
-    @physical_position = attrs[:physical_position] || [0, 0]
+    @device_attributes[DeviceAttribute::RESPONSE] = attributes[:response] || attributes[:device_rating]
+    @device_attributes[DeviceAttribute::SIGNAL] = attributes[:signal] || attributes[:device_rating]
+    @device_attributes[DeviceAttribute::SYSTEM] = attributes[:matrix_system] || attributes[:device_rating]
+    @device_attributes[DeviceAttribute::FIREWALL] = attributes[:firewall] || attributes[:device_rating]
+
+    @loaded_programs = attributes[:loaded_programs] || []
+    @programs = attributes[:programs] || []
+    @agents = attributes[:agents] || []
+    @subscriptions = attributes[:subscriptions] || []
+    @files = attributes[:files] || []
+
+    @encryption_rating = attributes[:encryption_rating]
+    @device_mode = attributes[:device_mode] || PASSIVE_MODE
+    @alert_status = attributes[:alert_status] || AlertStatus::NO_ALERT
+    @physical_position = attributes[:physical_position] || [0, 0]
   end
 
   def hidden?
     device_mode == HIDDEN_MODE
   end
 
-  def programs
-    icons.select { |i| i.is_a?(MatrixProgram)}
+  def icons
+    @loaded_programs + @programs + @agents + @subscriptions + @files
   end
 
-  def agents
-    icons.select { |i| i.is_a?(AgentProgram)}
+  def all_programs_on_node
+    @programs + @loaded_programs
   end
 
   def subscriptions_to_self
-    icons.select { |i| i.is_a?(NodeSubscription) && i.originating_node != self }
+    @subscriptions.select { |s| s.originating_node != self }
   end
 
   def subscriptions_to_others
-    icons.select { |i| i.is_a?(NodeSubscription) && i.originating_node == self }
+    @subscriptions.select { |s| s.originating_node == self }
   end
 
   def hidden_accesses
@@ -76,16 +86,16 @@ class MatrixNode
       wired: wired,
     )
 
-    icons << subscription
-    node.icons << subscription
+    @subscriptions << subscription
+    node.subscriptions << subscription
   end
 
   def user_programs_rating
-    agents.sum(&:total_programs_rating) + (decker&.total_programs_rating || 0)
+    @agents.sum(&:total_programs_rating) + (decker&.total_programs_rating || 0)
   end
 
-  def total_programs_rating
-    user_programs_rating + @running_programs.sum(&:rating) || 0
+  def running_programs_rating
+    user_programs_rating + total_programs_rating
   end
 
   def get_device_rating(device_attribute)
@@ -105,7 +115,7 @@ class MatrixNode
   private
 
   def actual_response
-    @device_attributes[DeviceAttribute::RESPONSE] - (total_programs_rating / calculated_overload_factor)
+    @device_attributes[DeviceAttribute::RESPONSE] - (running_programs_rating / calculated_overload_factor)
   end
 
   def actual_firewall
