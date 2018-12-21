@@ -2,7 +2,7 @@ class AgentProgram
   include RunsPrograms
   include CanCybercombat
 
-  attr_accessor :programs, :pilot_rating, :home_node, :matrix_damage_taklen
+  attr_reader :programs, :pilot_rating, :home_node, :matrix_damage_taklen
 
   delegate :actual_device_rating, to: :home_node
 
@@ -13,11 +13,11 @@ class AgentProgram
   end
 
   def actual_skill_rating(_)
-    pilot_rating.clamp(0, home_node.actual_device_attribute(DeviceAttribtue::RESPONSE))
+    pilot_rating.clamp(0, actual_device_rating(DeviceAttribute::RESPONSE))
   end
 
   def actual_attribute_rating(_)
-    pilot_rating.clamp(0, home_node.actual_device_attribute(DeviceAttribtue::RESPONSE))
+    pilot_rating.clamp(0, actual_device_rating(DeviceAttribute::RESPONSE))
   end
 
   def hot_sim_bonus
@@ -30,5 +30,10 @@ class AgentProgram
 
   def interface_mode
     InterfaceMode::HOT_SIM
+  end
+
+  def move_to_other_node(node:)
+    @home_node = node
+    self
   end
 end

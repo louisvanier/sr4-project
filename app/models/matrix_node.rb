@@ -17,7 +17,8 @@ class MatrixNode
     :encryption_rating,
     :alert_status,
     :decker,
-    :physical_position
+    :physical_position,
+    :running_programs
 
   attr_reader :device_mode
 
@@ -84,7 +85,7 @@ class MatrixNode
   end
 
   def total_programs_rating
-    user_programs_rating + @running_programs.sum(&:rating)
+    user_programs_rating + @running_programs.sum(&:rating) || 0
   end
 
   def get_device_rating(device_attribute)

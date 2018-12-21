@@ -154,25 +154,25 @@ class MatrixNodeTest < ActiveSupport::TestCase
   end
 
   test '#actual_device_rating returns the modified response if overloaded by running programs (MobileNode: 4x Response)' do
-    node1 = MobileNode.new(device_rating: 1, icons: [MatrixProgram.new(program_name: 'abc', rating: 3)])
+    node1 = MobileNode.new(device_rating: 1, running_programs: [MatrixProgram.new(program_name: 'abc', rating: 3)])
     assert_equal 1, node1.actual_device_rating(DeviceAttribute::RESPONSE)
-    node1.icons << MatrixProgram.new(program_name: 'abc', rating: 3)
+    node1.running_programs << MatrixProgram.new(program_name: 'abc', rating: 3)
     assert_equal 6, node1.total_programs_rating
     assert_equal 0, node1.actual_device_rating(DeviceAttribute::RESPONSE)
   end
 
   test '#actual_device_rating returns the modified response if overloaded by running programs (DesktopNode: 6x Response)' do
-    node1 = DesktopNode.new(device_rating: 1, icons: [MatrixProgram.new(program_name: 'abc', rating: 4)])
+    node1 = DesktopNode.new(device_rating: 1, running_programs: [MatrixProgram.new(program_name: 'abc', rating: 4)])
     assert_equal 1, node1.actual_device_rating(DeviceAttribute::RESPONSE)
-    node1.icons << MatrixProgram.new(program_name: 'abc', rating: 4)
+    node1.running_programs << MatrixProgram.new(program_name: 'abc', rating: 4)
     assert_equal 8, node1.total_programs_rating
     assert_equal 0, node1.actual_device_rating(DeviceAttribute::RESPONSE)
   end
 
   test '#actual_device_rating returns the modified response if overloaded by running programs (NexusNode: 8x Response)' do
-    node1 = NexusNode.new(device_rating: 1, icons: [MatrixProgram.new(program_name: 'abc', rating: 6)])
+    node1 = NexusNode.new(device_rating: 1, running_programs: [MatrixProgram.new(program_name: 'abc', rating: 6)])
     assert_equal 1, node1.actual_device_rating(DeviceAttribute::RESPONSE)
-    node1.icons << MatrixProgram.new(program_name: 'abc', rating: 6)
+    node1.running_programs << MatrixProgram.new(program_name: 'abc', rating: 6)
     assert_equal 12, node1.total_programs_rating
     assert_equal 0, node1.actual_device_rating(DeviceAttribute::RESPONSE)
   end

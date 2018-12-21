@@ -1,6 +1,6 @@
 module CanCybercombat
   def get_total_condition_boxes
-    (get_device_attribute_rating(DeviceAttribute::SYSTEM) / 2.0).ceil + 8
+    (actual_device_rating(DeviceAttribute::SYSTEM) / 2.0).ceil + 8
   end
 
   def get_damage_resistance_pool(attack_program, full_defense)

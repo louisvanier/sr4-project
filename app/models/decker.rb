@@ -17,17 +17,17 @@ class Decker
   def run_program(program)
     raise MatrixNode::NoSuchProgramError unless program = home_node.programs.find { |prog| prog == program }
     programs << program
-    home_node.programs.delete(program)
+    home_node.icons.delete(program)
   end
 
   def stop_program(program)
     raise MatrixNode::NoSuchProgramError unless program = programs.find { |prog| prog == program }
     programs.delete(program)
-    home_node.programs << program
+    home_node.icons << program
   end
 
   def actual_skill_rating(skill)
-    @skills[skill]
+    @skills[skill] || 0
   end
 
   def actual_attribute_rating(attribute)
@@ -38,8 +38,12 @@ class Decker
     @interface_mode == InterfaceMode::HOT_SIM ? 2 : 0
   end
 
+  def subscribe_to(node:)
+    @subscriptions << NodeSubscription.from_persona(decker: self, destination_node: node)
+  end
+
   def nodes_present_in
-    [home_node] << subscriptions.map { |sub| sub.destination_node }
+    ([home_node] << subscriptions.map { |sub| sub.destination_node }).flatten
   end
 
   private
@@ -50,5 +54,6 @@ class Decker
     @home_node = home_node
     @interface_mode = interface_mode
     @programs = programs
+    @subscriptions = []
   end
 end
