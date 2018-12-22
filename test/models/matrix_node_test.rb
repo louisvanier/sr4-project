@@ -95,7 +95,7 @@ class MatrixNodeTest < ActiveSupport::TestCase
 
   test '#user_programs_rating defaults to 0 for agent programs if there are none running on that node' do
     node1 = MobileNode.new(device_rating: 3)
-    decker = Decker.new(home_node: node1, programs: [MatrixProgram.new(program_name: MatrixProgram::ATTACK, rating: 3)], skills: [], attributes: [])
+    decker = Decker.from_node(home_node: node1, programs: [MatrixProgram.new(program_name: MatrixProgram::ATTACK, rating: 3)], skills: [], attributes: [])
     node1.decker = decker
 
     assert_equal 3, node1.user_programs_rating

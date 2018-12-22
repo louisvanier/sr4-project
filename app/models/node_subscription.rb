@@ -1,5 +1,5 @@
 class NodeSubscription
-  attr_accessor :originating_node, :destination_node, :persona, :slaved, :wired
+  attr_reader :originating_node, :destination_node, :persona, :slaved, :wired
 
   class << self
     def from_node(node:, destination_node:, slaved: false, wired: false)

@@ -79,8 +79,8 @@ class MatrixNode
       raise AlreadySubscribedError
     end
 
-    subscription = NodeSubscription.new(
-      originating_node: self,
+    subscription = NodeSubscription.from_node(
+      node: self,
       destination_node: node,
       slaved: slaved,
       wired: wired,
