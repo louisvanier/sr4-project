@@ -1,5 +1,6 @@
 class MatrixProgram
   ANALYZE = 'analyze'
+  ARMOR = 'analyze'
   ATTACK = 'attack'
   BIOFEEDBACK_FILTER = 'biofeedback-filter'
   BLACKOUT = 'blackout'
