@@ -5,7 +5,10 @@ module PerceptionDataProvider
         PerceptionData::ALERT_STATUS,
         PerceptionData::HIDDEN_ACCESS,
         PerceptionData::PROGRAMS_RUNNING,
-        PerceptionData::MATRIX_ATTRIBUTE_RATING,
+        PerceptionData::RESPONSE_RATING,
+        PerceptionData::SYSTEM_RATING,
+        PerceptionData::FIREWALL_RATING,
+        PerceptionData::SIGNAL_RATING,
       ]
     end
   end

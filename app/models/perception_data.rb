@@ -8,7 +8,10 @@ class PerceptionData
   MATRIX_DAMAGE = 'matrix-damage'
   HAS_DATA_BOMB = 'has-data-bomb'
   PROGRAMS_RUNNING = 'programs-running '
-  MATRIX_ATTRIBUTE_RATING = 'matrix-attribute-rating'
+  RESPONSE_RATING = 'response-rating'
+  SYSTEM_RATING = 'system-rating'
+  FIREWALL_RATING = 'firewall-rating'
+  SIGNAL_RATING = 'signal-rating'
   DECRYPTED = 'decrypted'
   TRACE_RUNNING = 'trace-running'
 

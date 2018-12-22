@@ -6,7 +6,10 @@ module PerceptionDataProvider
       expected_data = [
         PerceptionData::ACCESS_ID,
         PerceptionData::MATRIX_DAMAGE,
-        PerceptionData::MATRIX_ATTRIBUTE_RATING,
+        PerceptionData::RESPONSE_RATING,
+        PerceptionData::SYSTEM_RATING,
+        PerceptionData::FIREWALL_RATING,
+        PerceptionData::SIGNAL_RATING,
         PerceptionData::PROGRAMS_RUNNING,
         PerceptionData::TRACE_RUNNING,
       ]

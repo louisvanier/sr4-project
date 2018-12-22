@@ -52,14 +52,14 @@ module PerceptionDataProvider
       end
     end
 
-    test '#get_data with PerceptionData::MATRIX_ATTRIBUTE_RATING returns the matrix damage taken of the agent or decker' do
+    test '#get_data with PerceptionData::RESPONSE_RATING returns the response of the node, agent, or decker' do
       node1 = MobileNode.new(device_rating: 3)
       agent = AgentProgram.new(programs: [], pilot_rating: 3, home_node: node1)
       decker = Decker.from_node(home_node: node1, programs: [], skills: [], attributes: { })
 
-      [agent, decker].each do |icon|
+      [node1, agent, decker].each do |icon|
         provider = BaseProvider.from_matrix_object(icon)
-        assert_equal 3, provider.get_data(PerceptionData::MATRIX_ATTRIBUTE_RATING, DeviceAttribute::RESPONSE)
+        assert_equal 3, provider.get_data(PerceptionData::RESPONSE_RATING)
       end
     end
 

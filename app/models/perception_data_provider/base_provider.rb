@@ -23,14 +23,20 @@ module PerceptionDataProvider
       @matrix_object = matrix_object
     end
 
-    def get_data(data_type, arg = nil)
+    def get_data(data_type)
       case data_type
       when PerceptionData::ACCESS_ID
         @matrix_object.access_id
       when PerceptionData::MATRIX_DAMAGE
         @matrix_object.matrix_damage_taken
-      when PerceptionData::MATRIX_ATTRIBUTE_RATING
-        @matrix_object.actual_device_rating(arg)
+      when PerceptionData::RESPONSE_RATING
+        @matrix_object.actual_device_rating(DeviceAttribute::RESPONSE)
+        when PerceptionData::SYSTEM_RATING
+        @matrix_object.actual_device_rating(DeviceAttribute::SYSTEM)
+        when PerceptionData::FIREWALL_RATING
+        @matrix_object.actual_device_rating(DeviceAttribute::FIREWALL)
+        when PerceptionData::SIGNAL_RATING
+        @matrix_object.actual_device_rating(DeviceAttribute::SIGNAL)
       when PerceptionData::PROGRAMS_RUNNING
         @matrix_object.programs
       when PerceptionData::TRACE_RUNNING
