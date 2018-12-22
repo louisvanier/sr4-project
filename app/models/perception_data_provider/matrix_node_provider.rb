@@ -5,8 +5,7 @@ module PerceptionDataProvider
         PerceptionData::ALERT_STATUS,
         PerceptionData::HIDDEN_ACCESS,
         PerceptionData::PROGRAMS_RUNNING,
-        PerceptionData::MATRIX_ATTTRIBUTE_RATING,
-        PerceptionData::IS_ENCRYPTED,
+        PerceptionData::MATRIX_ATTRIBUTE_RATING,
       ]
     end
   end
