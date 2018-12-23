@@ -32,10 +32,6 @@ class HackingProcess
     @probing
   end
 
-  def can_keep_hacking?
-    @hacker.get_program_rating(MatrixProgram::EXPLOIT) > 0
-  end
-
   def hacking_dice_pool
     @hacker.actual_skill_rating(Skills::HACKING) + @hacker.actual_attribute_rating(Attributes::LOGIC) + @hacker.hot_sim_bonus
   end

@@ -3,15 +3,13 @@ module CanCybercombat
     (actual_device_rating(DeviceAttribute::SYSTEM) / 2.0).ceil + 8
   end
 
-  def get_damage_resistance_pool(attack_program, full_defense)
+  def get_damage_resistance_pool(attack_program)
     pool = 0
     if attack_program.black_IC?
-      pool += actual_attribute_rating(Attributes::WILLPOWER) + get_program_rating(MatrixPrograms::BIOFEEDBACK_FILTER) if attack_program.black_IC?
+      pool = actual_attribute_rating(Attributes::WILLPOWER) + get_program_rating(MatrixProgram::BIOFEEDBACK_FILTER) if attack_program.black_IC?
     else
-      actual_device_rating(DeviceAttribute::SYSTEM) + get_program_rating(MatrixPrograms::ARMOR)
+      pool = actual_device_rating(DeviceAttribute::SYSTEM) + get_program_rating(MatrixProgram::ARMOR)
     end
-
-    pool += actual_skill_rating(Skills::HACKING) if full_defense
 
     pool
   end
@@ -27,6 +25,7 @@ module CanCybercombat
     end
   end
 
+  # TODO => move this into a hash table in InterfaceMode
   def matrix_initiative_passes
     case interface_mode
     when InterfaceMode::AR
