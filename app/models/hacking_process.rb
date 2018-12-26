@@ -25,7 +25,6 @@ class HackingProcess
     @attempts++
     @hacker_total_hits += hacker_hits
     @node_total_hits += node_hits
-    @target_node.on_alert = true if hacking_detected
   end
 
   def probing?
@@ -41,7 +40,8 @@ class HackingProcess
   end
 
   def detect_hacking_dice_pool
-    @target_node.actual_firewall + @target_node.get_program_rating(MatrixProgram::ANALYZE)
+    return 0 unless node_can_try_to_detect?
+    @target_node.actual_device_rating(DeviceAttribute::FIREWALL) + @target_node.get_program_rating(MatrixProgram::ANALYZE)
   end
 
   def hacking_detected?
@@ -49,11 +49,7 @@ class HackingProcess
   end
 
   def hacking_successful?
-    hacker_total_hits >= @target_node.actual_firewall + TRESHOLD_MODIFIER[@account_type]
-  end
-
-  def current_hack_duration
-    "#{attempts} #{(probing? ? 'hour' : 'complex action').pluralize(attempts)}"
+    hacker_total_hits >= @target_node.actual_device_rating(DeviceAttribute::FIREWALL) + TRESHOLD_MODIFIER[@account_type]
   end
 
   private
