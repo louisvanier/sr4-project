@@ -25,7 +25,6 @@ module CanCybercombat
     end
   end
 
-  # TODO => move this into a hash table in InterfaceMode
   def matrix_initiative_passes
     case interface_mode
     when InterfaceMode::AR
