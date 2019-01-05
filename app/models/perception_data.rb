@@ -14,6 +14,7 @@ class PerceptionData
   SIGNAL_RATING = 'signal-rating'
   DECRYPTED = 'decrypted'
   TRACE_RUNNING = 'trace-running'
+  NODE_PRESENCE = 'node_presence'
 
   attr_reader :matrix_object, :available_data_pieces
 

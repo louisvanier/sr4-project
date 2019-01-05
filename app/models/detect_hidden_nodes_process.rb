@@ -1,6 +1,4 @@
 class DetectHiddenNodesProcess
-  private_class_method :new
-
   class << self
     def from_node_list(initiator, node_list)
     end

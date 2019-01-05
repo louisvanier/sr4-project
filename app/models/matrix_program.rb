@@ -7,6 +7,7 @@ class MatrixProgram
   BLACK_HAMMER = 'black-hammer'
   BROWSE = 'browse'
   DECRYPT = 'decrypt'
+  DEFUSE = 'defuse'
   ECCM = 'electronic-counter-counter-measure'
   EDIT = 'edit'
   ENCRYPT = 'encrypt'

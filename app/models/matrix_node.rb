@@ -71,7 +71,7 @@ class MatrixNode
   end
 
   def subscribe_to(node:, slaved: false, wired: false)
-    if subscriptions_to_others.any? { |s| s.slaved?}
+    if subscriptions_to_others.any? { |s| s.slaved? }
       raise AlreadySlavedError
     end
 
