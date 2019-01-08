@@ -2,7 +2,7 @@ class MatrixPerceptionProcess
   # initiatior is either an agent or a decker
   # matrix target is any icon so it can be a decker's persona, an agent, a node, a subscription, a file or a program
   # known data is a hash with the keys being the data_type and the values being the actual value
-  def initialize(initiator:, matrix_target:, known_data: {})
+  def initialize(initiator:, matrix_target:, known_data: [])
     @initiator = initiator
     @matrix_target = matrix_target
     @known_data = known_data
@@ -10,7 +10,7 @@ class MatrixPerceptionProcess
   end
 
   def available_data
-    @perception_data.available_data_pieces - @known_data.keys
+    @perception_data.available_data_pieces - @known_data
   end
 
   def initiator_perception_dice_pool

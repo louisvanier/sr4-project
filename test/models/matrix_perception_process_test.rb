@@ -25,12 +25,12 @@ class MatrixPerceptionProcessTest < ActiveSupport::TestCase
   end
 
   test '#available_data returns the provider available_data_pieces when known data is only the icon type' do
-    process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @target, known_data: { PerceptionData::ICON_TYPE => 'DesktopNode' })
+    process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @target, known_data: [PerceptionData::ICON_TYPE])
     assert_equal PerceptionDataProvider::MatrixNodeProvider.new(@target).available_data_pieces, process.available_data
   end
 
   test '#available_data does not return known_data in the available_data' do
-    known_data = { PerceptionData::ICON_TYPE => 'DesktopNode', PerceptionData::RESPONSE_RATING => 4 }
+    known_data = [PerceptionData::ICON_TYPE, PerceptionData::RESPONSE_RATING]
     expected_available_data = PerceptionDataProvider::MatrixNodeProvider.new(@target).available_data_pieces - [PerceptionData::RESPONSE_RATING]
 
     process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @target, known_data: known_data)
@@ -38,43 +38,43 @@ class MatrixPerceptionProcessTest < ActiveSupport::TestCase
   end
 
   test '#available_data returns only ICON_TYPE when known_data is empty' do
-    process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @target, known_data: {})
+    process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @target, known_data: [])
     assert_equal [PerceptionData::ICON_TYPE], process.available_data
   end
 
   test '#initiator_perception_dice_pool returns the initator COMPUTER + LOGIC + Hot sim bonus if any' do
-    process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @target, known_data: {})
+    process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @target, known_data: [])
 
     # COMPUTER(4) + LOGIC(5) + HOT_SIM(2)
     assert_equal 11, process.initiator_perception_dice_pool
   end
 
   test '#initiator_perception_dice_pool_limit returns the initiator ANALYZE program rating' do
-    process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @target, known_data: {})
+    process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @target, known_data: [])
 
     assert_equal 4, process.initiator_perception_dice_pool_limit
   end
 
   test '#matrix_target_stealth_pool returns HACKING + LOGIC + Hot sim bonus if any' do
-    process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @agent, known_data: {})
+    process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @agent, known_data: [])
 
     assert_equal 10, process.matrix_target_stealth_pool
   end
 
   test '#matrix_target_stealth_pool returns 0 for matrix_nodes since they cannot run a stealth program' do
-    process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @target, known_data: {})
+    process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @target, known_data: [])
 
     assert_equal 0, process.matrix_target_stealth_pool
   end
 
   test '#matrix_target_stealth_pool_limit returns the targets STEALTH program rating' do
-    process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @agent, known_data: {})
+    process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @agent, known_data: [])
 
     assert_equal 4, process.matrix_target_stealth_pool_limit
   end
 
   test '#matrix_target_stealth_pool_limit returns 0 for a matrix node' do
-    process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @target, known_data: {})
+    process = MatrixPerceptionProcess.new(initiator: @decker, matrix_target: @target, known_data: [])
 
     assert_equal 0, process.matrix_target_stealth_pool_limit
   end
