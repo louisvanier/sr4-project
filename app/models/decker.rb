@@ -69,6 +69,10 @@ class Decker
     @subscriptions << NodeSubscription.from_persona(decker: self, destination_node: node)
   end
 
+  def unsubscribe_to(node:)
+    @subscriptions.delete_if { |sub| sub.destination_node == node }
+  end
+
   def nodes_present_in
     ([home_node] << subscriptions.map { |sub| sub.destination_node }).flatten
   end

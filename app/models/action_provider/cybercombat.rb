@@ -1,5 +1,5 @@
 module ActionProvider
-  class CybercombatProvider
+  class Cybercombat
     def actions
       return [] unless current_actor.programs.any? { |prog| prog.damage_type && prog.rating > 0 }
 

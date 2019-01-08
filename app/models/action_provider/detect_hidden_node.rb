@@ -1,5 +1,5 @@
 module ActionProvider
-  class DetectHiddenNodeProvider < BaseProvider
+  class DetectHiddenNode < BaseProvider
     def actions
       return [] unless current_actor.get_program_rating(MatrixProgram::SCAN) > 0
 

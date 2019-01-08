@@ -1,5 +1,5 @@
 module ActionProvider
-  class DeactiveProgramProvider
+  class DeactiveProgram
     def actions
       return [] unless current_actor.is_a?(Decker)
 

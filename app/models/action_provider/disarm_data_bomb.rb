@@ -1,5 +1,5 @@
 module ActionProvider
-  class DisarmDataBombProvider < BaseProvider
+  class DisarmDataBomb < BaseProvider
     def actions
       return [] unless current_actor.get_program_rating(MatrixProgram::DEFUSE) > 0
       return [] unless known_bombs = known_data_pieces[current_actor].select { |icon, data| data.include?(PerceptionData::HAS_DATA_BOMB) }

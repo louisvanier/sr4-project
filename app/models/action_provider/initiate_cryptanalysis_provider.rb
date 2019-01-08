@@ -1,5 +1,5 @@
 module ActionProvider
-  class InitiateCryptanalysisProvider < BaseProvider
+  class InitiateCryptanalysis < BaseProvider
     def actions
       def initiate_cryptanalysis_actions
         return [] unless current_actor.get_program_rating(MatrixProgram::DECRYPT) > 0
