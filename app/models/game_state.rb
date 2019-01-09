@@ -52,7 +52,19 @@ class GameState
       h[action_type] = "ActionProvider::#{action_type}".constantize.new(game_state: self).actions
     end
 
-    # TODO => subscribe to_provider
+    # TODO => subscribe_to provider
+    # TODO => unsubscribe_to provider
+  end
+
+  def hidden_nodes_in_range
+    return [] unless current_actor.is_a?(Decker)
+    nodes_in_mutual_range(origin_node: current_actor.home_node).select do |node|
+      node.interface_mode == InterfaceMode::HIDDEN_MODE
+    end
+
+    # TODO => this should be implemented in action resolving where it adds the NODE_PRESENCE data.
+    # TODO => Action resolvers for cybercombat can include revealing personas and agent programs ICON_TYPE
+    # TODO => Probably missing some utility class around nodes in physical world
   end
 
   private
