@@ -37,6 +37,7 @@ class MatrixNode
     @loaded_programs = attributes[:loaded_programs] || []
     @programs = attributes[:programs] || []
     @agents = attributes[:agents] || []
+    @agents.each { |agent| agent.move_to_other_node(node: self)}
     @subscriptions = attributes[:subscriptions] || []
     @files = attributes[:files] || []
 
