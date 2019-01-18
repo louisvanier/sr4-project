@@ -12,6 +12,7 @@ class MatrixProgram
   EDIT = 'edit'
   ENCRYPT = 'encrypt'
   EXPLOIT = 'exploit'
+  SCAN = 'scan'
   SNIFFER = 'sniffer'
   STEALTH = 'stealth'
 

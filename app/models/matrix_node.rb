@@ -40,6 +40,7 @@ class MatrixNode
     @agents.each { |agent| agent.move_to_other_node(node: self)}
     @subscriptions = attributes[:subscriptions] || []
     @files = attributes[:files] || []
+    @files.each { |file| file.node = self }
 
     @encryption_rating = attributes[:encryption_rating]
     @device_mode = attributes[:device_mode] || PASSIVE_MODE

@@ -5,7 +5,7 @@ module ActionProvider
 
   class BaseProvider
     attr_reader :game_state
-    delegate :current_actor, :known_data_pieces, to: :game_state
+    delegate :current_actor, :known_data_pieces, :extended_actions, to: :game_state
 
     def initialize(game_state:)
       @game_state = game_state

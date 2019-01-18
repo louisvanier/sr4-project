@@ -2,12 +2,13 @@ require 'test_helper'
 
 module ActionProvider
   class MockState
-    attr_reader :current_actor, :known_data_pieces, :nodes
+    attr_reader :current_actor, :known_data_pieces, :nodes, :extended_actions
 
-    def initialize(current_actor, known_data_pieces, nodes)
+    def initialize(current_actor, known_data_pieces, nodes, extended_actions = nil)
       @current_actor = current_actor
       @known_data_pieces = known_data_pieces
       @nodes = nodes
+      @extended_actions = extended_actions
     end
   end
 

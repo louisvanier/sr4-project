@@ -40,7 +40,7 @@ class GameState
     end.concat(
       node.subscriptions_to_self.select do |sub|
           !sub.hidden_access? || known_data_pieces[current_actor][sub.originating_node].include?(PerceptionData::NODE_PRESENCE)
-        end.map(&:destination_node)
+        end.map(&:originating_node)
       end
     )
   end
@@ -54,6 +54,7 @@ class GameState
 
     # TODO => subscribe_to provider
     # TODO => unsubscribe_to provider
+    # TODO => load_program provider
   end
 
   def hidden_nodes_in_range
