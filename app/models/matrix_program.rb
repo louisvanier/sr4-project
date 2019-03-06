@@ -22,9 +22,16 @@ class MatrixProgram
 
   attr_accessor :rating, :program_name
 
+  attr_reader :game_id
+
   def initialize(rating:, program_name:)
     @rating = rating
     @program_name = program_name
+  end
+
+  def game_id=(value)
+    raise Exception unless game_id.nil?
+    @game_id = value
   end
 
   def black_IC?

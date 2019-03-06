@@ -1,5 +1,5 @@
 class NodeSubscription
-  attr_reader :originating_node, :destination_node, :persona, :slaved, :wired
+  attr_reader :originating_node, :destination_node, :persona, :slaved, :wired, :game_id
 
   class << self
     def from_node(node:, destination_node:, slaved: false, wired: false)
@@ -14,6 +14,11 @@ class NodeSubscription
     def from_persona(decker:, destination_node:)
       NodeSubscription.new(destination_node: destination_node, persona: decker)
     end
+  end
+
+  def game_id=(value)
+    raise Exception unless game_id.nil?
+    @game_id = value
   end
 
   def hidden_access?

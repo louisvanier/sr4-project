@@ -11,7 +11,7 @@ class Decker
     :meat_world_initiative_passes,
     :subscriptions
 
-    attr_reader :access_id
+    attr_reader :access_id, :game_id
 
   delegate :actual_device_rating, to: :home_node
 
@@ -39,6 +39,11 @@ class Decker
       home_node.decker = decker
       decker
     end
+  end
+
+  def game_id=(value)
+    raise Exception unless game_id.nil?
+    @game_id = value
   end
 
   def run_program(program)

@@ -2,7 +2,7 @@ class AgentProgram
   include RunsPrograms
   include CanCybercombat
 
-  attr_reader :programs, :pilot_rating, :home_node, :matrix_damage_taken, :access_id
+  attr_reader :programs, :pilot_rating, :home_node, :matrix_damage_taken, :access_id, :game_id
 
   delegate :actual_device_rating, to: :home_node
 
@@ -12,6 +12,11 @@ class AgentProgram
     @home_node = home_node
     @access_id = access_id
     @matrix_damage_taken = matrix_damage_taken
+  end
+
+  def game_id=(value)
+    raise Exception unless game_id.nil?
+    @game_id = value
   end
 
   def actual_skill_rating(_)

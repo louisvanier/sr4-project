@@ -34,4 +34,13 @@ class NodeSubscriptionTest < ActiveSupport::TestCase
     subscription = NodeSubscription.from_node(node: @node1, destination_node: hidden_node)
     assert subscription.hidden_access?
   end
+
+  test 'setting game_id once it is not nil raises an error' do
+    subscription = NodeSubscription.from_node(node: @node1, destination_node: @node2)
+    subscription.game_id = 1
+    assert_raises Exception do
+      subscription.game_id = 2
+    end
+    assert_equal 1, subscription.game_id
+  end
 end

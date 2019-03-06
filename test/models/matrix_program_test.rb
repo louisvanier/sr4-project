@@ -55,4 +55,13 @@ class MatrixProgramTest < ActiveSupport::TestCase
       assert_nil MatrixProgram.new(program_name: program_name, rating: 1).damage_type
     end
   end
+
+  test 'setting game_id once it is not nil raises an error' do
+    program = MatrixProgram.new(program_name: MatrixProgram::BLACKOUT, rating: 1)
+    program.game_id = 1
+    assert_raises Exception do
+      program.game_id = 2
+    end
+    assert_equal 1, program.game_id
+  end
 end

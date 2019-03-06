@@ -52,4 +52,14 @@ class AgentProgramTest < ActiveSupport::TestCase
     @agent.move_to_other_node(node: @other_node)
     assert_equal @other_node, @agent.home_node
   end
+
+  test 'setting game_id once it is not nil raises an error' do
+    home_node = MobileNode.new(device_rating: 3)
+    agent = AgentProgram.new(programs: [], pilot_rating: 5, home_node: home_node)
+    agent.game_id = 1
+    assert_raises Exception do
+      agent.game_id = 2
+    end
+    assert_equal 1, agent.game_id
+  end
 end

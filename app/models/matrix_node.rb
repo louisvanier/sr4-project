@@ -25,7 +25,8 @@ class MatrixNode
     :files,
     :encryption_rating,
     :alert_status,
-    :physical_position
+    :physical_position,
+    :game_id
 
   def initialize(**attributes)
     @device_attributes = {}
@@ -46,6 +47,11 @@ class MatrixNode
     @device_mode = attributes[:device_mode] || PASSIVE_MODE
     @alert_status = attributes[:alert_status] || AlertStatus::NO_ALERT
     @physical_position = attributes[:physical_position] || [0, 0]
+  end
+
+  def game_id=(value)
+    raise Exception unless game_id.nil?
+    @game_id = value
   end
 
   def hidden?

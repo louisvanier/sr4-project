@@ -106,4 +106,14 @@ class DeckerTest < ActiveSupport::TestCase
     decker.subscribe_to(node: node2)
     assert_equal [node, node2], decker.nodes_present_in
   end
+
+  test 'setting game_id once it is not nil raises an error' do
+    node = MobileNode.new(device_rating: 3, icons: [])
+    decker = Decker.from_node(home_node: node, skills: {}, attributes: {}, programs: [])
+    decker.game_id = 1
+    assert_raises Exception do
+      decker.game_id = 2
+    end
+    assert_equal 1, decker.game_id
+  end
 end

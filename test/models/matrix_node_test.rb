@@ -182,4 +182,13 @@ class MatrixNodeTest < ActiveSupport::TestCase
     in_range_node = MobileNode.new(device_rating: 3, physical_position: [400, 400])
     refute origin_node.in_mutual_range?(node: in_range_node)
   end
+
+  test 'setting game_id once it is not nil raises an error' do
+    node = MobileNode.new(device_rating: 3)
+    node.game_id = 1
+    assert_raises Exception do
+      node.game_id = 2
+    end
+    assert_equal 1, node.game_id
+  end
 end
