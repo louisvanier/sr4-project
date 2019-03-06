@@ -170,4 +170,16 @@ class MatrixNodeTest < ActiveSupport::TestCase
     assert_equal 5, node1.get_device_rating(DeviceAttribute::SYSTEM)
     assert_equal 3, node1.actual_device_rating(DeviceAttribute::SYSTEM)
   end
+
+  test '#in_mutual_range? returns true if the absolute distance between the nodes is within the signal reach' do
+    origin_node = MobileNode.new(device_rating: 3, physical_position: [0, 0])
+    in_range_node = MobileNode.new(device_rating: 3, physical_position: [200, 200])
+    assert origin_node.in_mutual_range?(node: in_range_node)
+  end
+
+  test '#in_mutual_range? returns false if the absolute distance between the nodes is greater than signal reach' do
+    origin_node = MobileNode.new(device_rating: 3, physical_position: [0, 0])
+    in_range_node = MobileNode.new(device_rating: 3, physical_position: [400, 400])
+    refute origin_node.in_mutual_range?(node: in_range_node)
+  end
 end

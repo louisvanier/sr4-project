@@ -114,6 +114,15 @@ class MatrixNode
     prog.rating.clamp(0, actual_response)
   end
 
+  def in_mutual_range?(node:)
+    return false if node == self
+
+    distance_x = node.physical_position[0] - physical_position[0]
+    distance_y = node.physical_position[1] - physical_position[1]
+    signal_range =  ::DeviceAttribute::SIGNAL_RANGE_BY_RATING[actual_signal]
+    (distance_x + distance_y).abs <= signal_range.clamp(0, ::DeviceAttribute::SIGNAL_RANGE_BY_RATING[node.actual_device_rating(::DeviceAttribute::SIGNAL)])
+  end
+
   private
 
   def actual_response
