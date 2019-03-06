@@ -8,6 +8,36 @@ class GameState
     :known_data_pieces
 
   def initialize
+    @object_counter = 0
+    @nodes = []
+    @personas = []
+    @current_actor = []
+    @player_personas = []
+    @known_data_pieces = {}
+  end
+
+  def add_node(node)
+    add_game_object(node)
+    node.icons.each { |icon| add_game_object(icon) }
+    node.subscriptions_to_others.each { |subscription| add_game_object(subscription)}
+    node.subscriptions_to_self.each { |subscription| add_game_object(subscription)}
+    nodes << node
+  end
+
+  def add_persona(persona:, known_data: {})
+    add_game_object(persona)
+    persona.programs.each { |prog| add_game_object(prog) }
+    node.subscriptions.each { |subscription| add_game_object(subscription)}
+    personas << persona
+    known_data_pieces[persona] = known_data
+  end
+
+  def add_player(player, known_data: {})
+    add_game_object(player)
+    player.programs.each { |prog| add_game_object(prog) }
+    node.subscriptions.each { |subscription| add_game_object(subscription)}
+    player_personas << player
+    known_data_pieces[player] = known_data
   end
 
   def initiative_order
@@ -31,5 +61,12 @@ class GameState
     ActionProvider.registered_providers.each_with_object({}) do |action_type, h|
       h[action_type] = "ActionProvider::#{action_type}".constantize.new(game_state: self).actions
     end
+  end
+
+  private
+
+  def add_game_object(game_object)
+    return unless game_object.game_id.nil?
+    game_object.game_id = ++@object_counter
   end
 end
