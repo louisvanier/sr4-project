@@ -31,7 +31,6 @@ class GameState
     ActionProvider.registered_providers.each_with_object({}) do |action_type, h|
       h[action_type] = "ActionProvider::#{action_type}".constantize.new(game_state: self).actions
     end
-    # TODO => unsubscribe_to provider
     # TODO => load_program provider
   end
 end
