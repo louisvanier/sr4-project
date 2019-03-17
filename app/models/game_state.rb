@@ -27,15 +27,15 @@ class GameState
   def add_persona(persona:, known_data: {})
     add_game_object(persona)
     persona.programs.each { |prog| add_game_object(prog) }
-    node.subscriptions.each { |subscription| add_game_object(subscription)}
+    persona.subscriptions.each { |subscription| add_game_object(subscription)}
     personas << persona
     known_data_pieces[persona] = known_data
   end
 
-  def add_player(player, known_data: {})
+  def add_player(player:, known_data: {})
     add_game_object(player)
     player.programs.each { |prog| add_game_object(prog) }
-    node.subscriptions.each { |subscription| add_game_object(subscription)}
+    player.subscriptions.each { |subscription| add_game_object(subscription)}
     player_personas << player
     known_data_pieces[player] = known_data
   end

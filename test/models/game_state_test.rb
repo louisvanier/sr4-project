@@ -27,21 +27,84 @@ class GameStateTest < ActiveSupport::TestCase
   end
 
   test '#add_persona adds it to the list of personas' do
+    state = GameState.new
+
+    node = MobileNode.new(device_rating: 3)
+    decker = Decker.from_node(home_node: node, skills: {}, attributes: {}, programs: [])
+
+    assert_equal 0, state.personas.size
+    state.add_persona(persona: decker)
+    assert_equal 1, state.personas.size
   end
 
-  test '#add_persona sets a game_id to it and its programs' do
+  test '#add_persona sets a game_id to it, its programs and its subscriptions' do
+    state = GameState.new
+
+    node = MobileNode.new(device_rating: 3)
+    analyze = MatrixProgram.new(program_name: MatrixProgram::ANALYZE, rating: 2)
+    stealth = MatrixProgram.new(program_name: MatrixProgram::STEALTH, rating: 2)
+    decker = Decker.from_node(home_node: node, skills: {}, attributes: {}, programs: [analyze, stealth])
+
+    state.add_persona(persona: decker)
+
+    assert_not_nil decker.game_id
+    assert decker.programs.size > 0
+    decker.programs.each do |prog|
+      assert_not_nil prog.game_id
+    end
   end
 
   test '#add_persona sets its known_data' do
+    state = GameState.new
+
+    node = MobileNode.new(device_rating: 3)
+    decker = Decker.from_node(home_node: node, skills: {}, attributes: {}, programs: [])
+    other_node = DesktopNode.new(device_rating: 3)
+
+    state.add_node(other_node)
+    state.add_persona(persona: decker, known_data: { other_node => [PerceptionData::RESPONSE_RATING, PerceptionData::SIGNAL_RATING]})
+
+    assert_equal({ other_node => [PerceptionData::RESPONSE_RATING, PerceptionData::SIGNAL_RATING] }, state.known_data_pieces[decker])
   end
 
   test '#add_player adds it to the list of player personas' do
+    state = GameState.new
 
+    node = MobileNode.new(device_rating: 3)
+    decker = Decker.from_node(home_node: node, skills: {}, attributes: {}, programs: [])
+
+    assert_equal 0, state.personas.size
+    state.add_player(player: decker)
+    assert_equal 1, state.player_personas.size
   end
 
   test '#add_player sets a game_id to it and its programs' do
+    state = GameState.new
+
+    node = MobileNode.new(device_rating: 3)
+    analyze = MatrixProgram.new(program_name: MatrixProgram::ANALYZE, rating: 2)
+    stealth = MatrixProgram.new(program_name: MatrixProgram::STEALTH, rating: 2)
+    decker = Decker.from_node(home_node: node, skills: {}, attributes: {}, programs: [analyze, stealth])
+
+    state.add_player(player: decker)
+
+    assert_not_nil decker.game_id
+    assert decker.programs.size > 0
+    decker.programs.each do |prog|
+      assert_not_nil prog.game_id
+    end
   end
 
   test '#add_player sets its known_data' do
+    state = GameState.new
+
+    node = MobileNode.new(device_rating: 3)
+    decker = Decker.from_node(home_node: node, skills: {}, attributes: {}, programs: [])
+    other_node = DesktopNode.new(device_rating: 3)
+
+    state.add_node(other_node)
+    state.add_player(player: decker, known_data: { other_node => [PerceptionData::RESPONSE_RATING, PerceptionData::SIGNAL_RATING]})
+
+    assert_equal({ other_node => [PerceptionData::RESPONSE_RATING, PerceptionData::SIGNAL_RATING] }, state.known_data_pieces[decker])
   end
 end
