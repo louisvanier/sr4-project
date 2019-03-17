@@ -43,4 +43,13 @@ class AgentProgram
     @home_node = node
     self
   end
+
+  def as_json(_options)
+    {
+      game_id: game_id,
+      access_id: access_id,
+      pilot_rating: pilot_rating,
+      matrix_damage_taken: matrix_damage_taken,
+    }
+  end
 end

@@ -125,8 +125,28 @@ class MatrixNode
 
     distance_x = node.physical_position[0] - physical_position[0]
     distance_y = node.physical_position[1] - physical_position[1]
-    signal_range =  ::DeviceAttribute::SIGNAL_RANGE_BY_RATING[actual_signal]
+    signal_range = ::DeviceAttribute::SIGNAL_RANGE_BY_RATING[actual_signal]
     (distance_x + distance_y).abs <= signal_range.clamp(0, ::DeviceAttribute::SIGNAL_RANGE_BY_RATING[node.actual_device_rating(::DeviceAttribute::SIGNAL)])
+  end
+
+  def as_json(_options)
+    {
+      game_id: game_id,
+      device_attributes: {
+        response: device_attributes[DeviceAttribute::RESPONSE],
+        signal: device_attributes[DeviceAttribute::SIGNAL],
+        system: device_attributes[DeviceAttribute::SYSTEM],
+        firewall: device_attributes[DeviceAttribute::FIREWALL]
+      },
+      device_mode: device_mode,
+      encryption_rating: encryption_rating,
+      alert_status: alert_status,
+      physical_position: physical_position,
+      loaded_programs: loaded_programs,
+      programs: programs,
+      files: files,
+      agents: agents,
+    }
   end
 
   private

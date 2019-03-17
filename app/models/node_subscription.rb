@@ -33,6 +33,17 @@ class NodeSubscription
     @wired
   end
 
+  def as_json(_option)
+    {
+      game_id: game_id,
+      originating_node: originating_node&.game_id,
+      destination_node: destination_node.game_id,
+      persona: persona&.game_id,
+      slaved: slaved?,
+      wired: wired?
+    }
+  end
+
   private
 
   def initialize(destination_node:, originating_node: nil, persona: nil, slaved: false, wired: false)

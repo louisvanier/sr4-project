@@ -44,4 +44,12 @@ class MatrixProgram
     return PHYSICAL_DAMAGE if @program_name == BLACK_HAMMER
     nil
   end
+
+  def as_json
+    {
+      game_id: game_id,
+      rating: rating,
+      program_name: program_name,
+    }
+  end
 end
