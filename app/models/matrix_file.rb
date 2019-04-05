@@ -1,5 +1,6 @@
 class MatrixFile
   include Encryptable
+  include ComparableGameObject
 
   attr_accessor :file_content, :edit_date, :encryption_rating, :data_bomb_rating, :node
 

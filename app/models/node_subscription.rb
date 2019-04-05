@@ -1,4 +1,6 @@
 class NodeSubscription
+  include ComparableGameObject
+
   attr_reader :originating_node, :destination_node, :persona, :slaved, :wired, :game_id
 
   class << self

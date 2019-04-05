@@ -16,6 +16,10 @@ class MatrixNodeTest < ActiveSupport::TestCase
     node2 = MobileNode.new(device_rating: 3)
     node3 = MobileNode.new(device_rating: 3)
 
+    node1.game_id = 1
+    node2.game_id = 2
+    node3.game_id = 3
+
     node2.subscribe_to(node: node1)
     node1.subscribe_to(node: node3)
     assert_equal 1, node1.subscriptions_to_self.length
@@ -27,6 +31,10 @@ class MatrixNodeTest < ActiveSupport::TestCase
     node2 = MobileNode.new(device_rating: 3)
     node3 = MobileNode.new(device_rating: 3)
 
+    node1.game_id = 1
+    node2.game_id = 2
+    node3.game_id = 3
+
     node2.subscribe_to(node: node1)
     node1.subscribe_to(node: node3)
     assert_equal 1, node1.subscriptions_to_others.length
@@ -37,6 +45,10 @@ class MatrixNodeTest < ActiveSupport::TestCase
     node1 = MobileNode.new(device_rating: 3)
     node2 = MobileNode.new(device_rating: 3, device_mode: MatrixNode::HIDDEN_MODE)
     node3 = MobileNode.new(device_rating: 3)
+
+    node1.game_id = 1
+    node2.game_id = 2
+    node3.game_id = 3
 
     node1.subscribe_to(node: node2)
     node1.subscribe_to(node: node3)
@@ -68,6 +80,9 @@ class MatrixNodeTest < ActiveSupport::TestCase
   test '#subscribe_to adds the subscription to the orignating and destination node' do
     node1 = MobileNode.new(device_rating: 3)
     node2 = MobileNode.new(device_rating: 3)
+
+    node1.game_id = 1
+    node2.game_id = 2
 
     node1.subscribe_to(node: node2)
     assert_equal 1, node1.subscriptions_to_others.length
@@ -174,6 +189,10 @@ class MatrixNodeTest < ActiveSupport::TestCase
   test '#in_mutual_range? returns true if the absolute distance between the nodes is within the signal reach' do
     origin_node = MobileNode.new(device_rating: 3, physical_position: [0, 0])
     in_range_node = MobileNode.new(device_rating: 3, physical_position: [200, 200])
+
+    origin_node.game_id = 1
+    in_range_node.game_id = 2
+
     assert origin_node.in_mutual_range?(node: in_range_node)
   end
 

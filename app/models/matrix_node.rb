@@ -1,6 +1,7 @@
 class MatrixNode
   include Encryptable
   include RunsPrograms
+  include ComparableGameObject
 
   class AlreadySlavedError <  StandardError; end
   class AlreadySubscribedError < StandardError; end

@@ -1,4 +1,6 @@
 class MatrixProgram
+  include ComparableGameObject
+
   ANALYZE = 'analyze'
   ARMOR = 'analyze'
   ATTACK = 'attack'

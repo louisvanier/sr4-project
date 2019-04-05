@@ -1,6 +1,7 @@
 class AgentProgram
   include RunsPrograms
   include CanCybercombat
+  include ComparableGameObject
 
   attr_reader :programs, :pilot_rating, :home_node, :matrix_damage_taken, :access_id, :game_id
 

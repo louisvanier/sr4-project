@@ -1,6 +1,7 @@
 class Decker
   include RunsPrograms
   include CanCybercombat
+  include ComparableGameObject
 
   attr_accessor :skills,
     :attributes,
