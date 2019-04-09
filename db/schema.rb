@@ -10,7 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_09_164300) do
+ActiveRecord::Schema.define(version: 2019_04_09_170441) do
+
+  create_table "templates_matrix_users", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "name"
+    t.integer "reaction"
+    t.integer "intuition"
+    t.integer "logic"
+    t.integer "willpower"
+    t.integer "computer"
+    t.integer "cybercombat"
+    t.integer "data_search"
+    t.integer "electronic_warfare"
+    t.integer "hacking"
+    t.text "programs"
+    t.string "access_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_templates_matrix_users_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
