@@ -54,14 +54,14 @@ class CybercombatProcessTest < ActiveSupport::TestCase
   test '#get_damage_details returns the damage value and type and the damage soak roll' do
     details = CybercombatProcess.get_damage_details(2, @decker, @blackout_agent, @decker.get_program(MatrixProgram::ATTACK))
     assert_equal 6, details.damage_value # ATTACK(rating 4) + 2 Net hits
-    assert_equal MatrixProgram::MATRIX_DAMAGE, details.damage_type
+    assert_equal DamageType::MATRIX_DAMAGE, details.damage_type
     assert_equal 5, details.damage_soak_pool # SYTEM(5) + ARMOR(0)
   end
 
   test '#get_damage_details gets willpower + biofeedback filter against black IC' do
     details = CybercombatProcess.get_damage_details(2, @blackout_agent, @decker, @blackout_agent.get_program(MatrixProgram::BLACKOUT))
     assert_equal 6, details.damage_value # ATTACK(rating 4) + 2 Net hits
-    assert_equal MatrixProgram::STUN_DAMAGE, details.damage_type
+    assert_equal DamageType::STUN_DAMAGE, details.damage_type
     assert_equal 7, details.damage_soak_pool # WILLPOWER(5) + BIOFEEDBACK_FILTER(2)
   end
 end

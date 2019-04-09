@@ -28,15 +28,15 @@ class MatrixProgramTest < ActiveSupport::TestCase
   end
 
   test '#damage_type returns matrix-damage for ATTACK' do
-    assert_equal MatrixProgram::MATRIX_DAMAGE, MatrixProgram.new(program_name: MatrixProgram::ATTACK, rating: 1).damage_type
+    assert_equal DamageType::MATRIX_DAMAGE, MatrixProgram.new(program_name: MatrixProgram::ATTACK, rating: 1).damage_type
   end
 
   test '#damage_type returns stun-damage for BLACKOUT' do
-    assert_equal MatrixProgram::STUN_DAMAGE, MatrixProgram.new(program_name: MatrixProgram::BLACKOUT, rating: 1).damage_type
+    assert_equal DamageType::STUN_DAMAGE, MatrixProgram.new(program_name: MatrixProgram::BLACKOUT, rating: 1).damage_type
   end
 
   test '#damage_type returns physical-damage for BLACK_HAMMER' do
-    assert_equal MatrixProgram::PHYSICAL_DAMAGE, MatrixProgram.new(program_name: MatrixProgram::BLACK_HAMMER, rating: 1).damage_type
+    assert_equal DamageType::PHYSICAL_DAMAGE, MatrixProgram.new(program_name: MatrixProgram::BLACK_HAMMER, rating: 1).damage_type
   end
 
   test '#damage_type returns nil for non-attack programs' do

@@ -18,10 +18,6 @@ class MatrixProgram
   SNIFFER = 'sniffer'
   STEALTH = 'stealth'
 
-  MATRIX_DAMAGE = 'matrix-damage'
-  STUN_DAMAGE = 'stun-damage'
-  PHYSICAL_DAMAGE = 'physical-damage'
-
   attr_accessor :rating, :program_name
 
   attr_reader :game_id
@@ -41,9 +37,9 @@ class MatrixProgram
   end
 
   def damage_type
-    return MATRIX_DAMAGE if @program_name == ATTACK
-    return STUN_DAMAGE if @program_name == BLACKOUT
-    return PHYSICAL_DAMAGE if @program_name == BLACK_HAMMER
+    return DamageType::MATRIX_DAMAGE if @program_name == ATTACK
+    return DamageType::STUN_DAMAGE if @program_name == BLACKOUT
+    return DamageType::PHYSICAL_DAMAGE if @program_name == BLACK_HAMMER
     nil
   end
 
