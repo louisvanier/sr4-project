@@ -1,6 +1,34 @@
 require 'test_helper'
 
 class GameStateTest < ActiveSupport::TestCase
+  setup do
+    @state = GameState.new
+
+    @analyze = MatrixProgram.new(program_name: MatrixProgram::ANALYZE, rating: 2)
+    @stealth = MatrixProgram.new(program_name: MatrixProgram::STEALTH, rating: 2)
+    @node = MobileNode.new(device_rating: 3, programs: [@analyze, @stealth])
+
+    @state.add_node(@node)
+
+    @spider_node = MobileNode.new(device_rating: 3)
+    @spider_analyze = MatrixProgram.new(program_name: MatrixProgram::ANALYZE, rating: 2)
+    @spider_stealth = MatrixProgram.new(program_name: MatrixProgram::STEALTH, rating: 2)
+
+    @state.add_node(@spider_node)
+    @spider = Decker.from_node(home_node: @spider_node, skills: {}, attributes: {}, programs: [@spider_analyze, @spider_stealth])
+    @state.add_persona(persona: @spider, known_data: { @node => [PerceptionData::RESPONSE_RATING, PerceptionData::SIGNAL_RATING, PerceptionData::NODE_PRESENCE]})
+
+    @decker_node = MobileNode.new(device_rating: 3)
+    @decker_analyze = MatrixProgram.new(program_name: MatrixProgram::ANALYZE, rating: 2)
+    @decker_stealth = MatrixProgram.new(program_name: MatrixProgram::STEALTH, rating: 2)
+
+    @state.add_node(@decker_node)
+    @decker = Decker.from_node(home_node: @decker_node, skills: {}, attributes: {}, programs: [@decker_analyze, @decker_stealth])
+    @state.add_player(player: @decker, known_data: { @spider_node => [PerceptionData::RESPONSE_RATING, PerceptionData::SIGNAL_RATING, PerceptionData::NODE_PRESENCE]})
+
+    @state.current_actor = @decker
+  end
+
   test '#add_node adds it to the list of nodes' do
     state = GameState.new
     node = MobileNode.new(device_rating: 3)

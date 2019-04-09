@@ -43,4 +43,34 @@ class NodeSubscriptionTest < ActiveSupport::TestCase
     end
     assert_equal 1, subscription.game_id
   end
+
+  test '#as_json serializes only the nodes game_id' do
+    @node1.expects(game_id: 1)
+    @node2.expects(game_id: 2)
+    subscription = NodeSubscription.from_node(node: @node1, destination_node: @node2)
+    json_result = JSON.parse(subscription.to_json)
+    assert_equal 1, json_result['originating_node']
+    assert_equal 2, json_result['destination_node']
+  end
+
+  test '#as_json serializes null for the persona when its a node to node subscription' do
+    subscription = NodeSubscription.from_node(node: @node1, destination_node: @node2)
+    json_result = JSON.parse(subscription.to_json)
+    assert json_result.keys.any? { |key| key == 'persona' }
+    assert_nil json_result['persona']
+  end
+
+  test '#as_json serializes only the persona game_id' do
+    @persona.expects(game_id: 1)
+    subscription = NodeSubscription.from_persona(decker: @persona, destination_node: @node2)
+    json_result = JSON.parse(subscription.to_json)
+    assert_equal 1, json_result['persona']
+  end
+
+  test '#as_json serializes null for the originating_node when its a persona subscription' do
+    subscription = NodeSubscription.from_persona(decker: @persona, destination_node: @node2)
+    json_result = JSON.parse(subscription.to_json)
+    assert json_result.keys.any? { |key| key == 'originating_node' }
+    assert_nil json_result['originating_node']
+  end
 end

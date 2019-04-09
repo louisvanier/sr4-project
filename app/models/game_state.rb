@@ -1,7 +1,8 @@
 class GameState
+  attr_accessor :current_actor
+
   attr_reader :nodes,
     :personas,
-    :current_actor,
     :player_personas,
     :current_initiative_pass,
     :extended_actions,
@@ -11,7 +12,7 @@ class GameState
     @object_counter = 0
     @nodes = []
     @personas = []
-    @current_actor = []
+    @current_actor = nil
     @player_personas = []
     @known_data_pieces = {}
   end
@@ -38,6 +39,19 @@ class GameState
     player.subscriptions.each { |subscription| add_game_object(subscription)}
     player_personas << player
     known_data_pieces[player] = known_data
+  end
+
+  def as_json(_options)
+    {
+      nodes: nodes.as_json(_options),
+      personas: personas.as_json(_options),
+      player_personas: player_personas.as_json(_options),
+      current_initiative_pass: current_initiative_pass,
+      subscriptions: all_subscriptions,
+      current_actor: current_actor.game_id,
+      extended_actions: extended_actions&.map { |actor, actions| { actor.game_id => actions }},
+      known_data_pieces: known_data_pieces&.map { |actor, nodes| { actor.game_id => nodes.map { |node, data_pieces| [node.game_id, data_pieces]}.to_h }}
+    }
   end
 
   def initiative_order
@@ -68,5 +82,9 @@ class GameState
   def add_game_object(game_object)
     return unless game_object.game_id.nil?
     game_object.game_id = ++@object_counter
+  end
+
+  def all_subscriptions
+    nodes.map(&:subscriptions_to_self).concat(nodes.map(&:subscriptions_to_others)).concat(personas.map(&:subscriptions)).concat(player_personas.map(&:subscriptions))
   end
 end

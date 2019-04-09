@@ -1,4 +1,6 @@
 class NodeSubscription
+  include ComparableGameObject
+
   attr_reader :originating_node, :destination_node, :persona, :slaved, :wired, :game_id
 
   class << self
@@ -31,6 +33,17 @@ class NodeSubscription
 
   def wired?
     @wired
+  end
+
+  def as_json(_option)
+    {
+      game_id: game_id,
+      originating_node: originating_node&.game_id,
+      destination_node: destination_node.game_id,
+      persona: persona&.game_id,
+      slaved: slaved?,
+      wired: wired?
+    }
   end
 
   private

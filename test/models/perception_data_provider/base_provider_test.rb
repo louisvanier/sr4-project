@@ -86,6 +86,10 @@ module PerceptionDataProvider
       node2 = MobileNode.new(device_rating: 3, device_mode: MatrixNode::HIDDEN_MODE)
       node3 = MobileNode.new(device_rating: 3)
 
+      node1.game_id = 1
+      node2.game_id = 2
+      node3.game_id = 3
+
       node1.subscribe_to(node: node2)
       node1.subscribe_to(node: node3)
 

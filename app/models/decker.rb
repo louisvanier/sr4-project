@@ -1,6 +1,7 @@
 class Decker
   include RunsPrograms
   include CanCybercombat
+  include ComparableGameObject
 
   attr_accessor :skills,
     :attributes,
@@ -80,6 +81,29 @@ class Decker
 
   def nodes_present_in
     ([home_node] << subscriptions.map { |sub| sub.destination_node }).flatten
+  end
+
+  def as_json(_options)
+    {
+      game_id: game_id,
+      attributes: {
+        Attributes::REACTION => attributes[Attributes::REACTION],
+        Attributes::INTUITION => attributes[Attributes::INTUITION],
+        Attributes::LOGIC => attributes[Attributes::LOGIC],
+        Attributes::WILLPOWER => attributes[Attributes::WILLPOWER]
+      },
+      skills: {
+          Skills::COMPUTER => skills[Skills::COMPUTER],
+          Skills::CYBERCOMBAT => skills[Skills::CYBERCOMBAT],
+          Skills::DATA_SEARCH => skills[Skills::DATA_SEARCH],
+          Skills::ELECTRONIC_WARFARE => skills[Skills::ELECTRONIC_WARFARE],
+          Skills::HACKING => skills[Skills::HACKING]
+      },
+      interface_mode: interface_mode,
+      programs: programs,
+      matrix_damage_taken: matrix_damage_taken,
+      meat_world_initiative_passes: meat_world_initiative_passes
+    }
   end
 
   private

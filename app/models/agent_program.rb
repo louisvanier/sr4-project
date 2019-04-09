@@ -1,6 +1,7 @@
 class AgentProgram
   include RunsPrograms
   include CanCybercombat
+  include ComparableGameObject
 
   attr_reader :programs, :pilot_rating, :home_node, :matrix_damage_taken, :access_id, :game_id
 
@@ -42,5 +43,14 @@ class AgentProgram
   def move_to_other_node(node:)
     @home_node = node
     self
+  end
+
+  def as_json(_options)
+    {
+      game_id: game_id,
+      access_id: access_id,
+      pilot_rating: pilot_rating,
+      matrix_damage_taken: matrix_damage_taken,
+    }
   end
 end

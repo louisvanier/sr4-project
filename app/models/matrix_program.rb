@@ -1,4 +1,6 @@
 class MatrixProgram
+  include ComparableGameObject
+
   ANALYZE = 'analyze'
   ARMOR = 'analyze'
   ATTACK = 'attack'
@@ -43,5 +45,13 @@ class MatrixProgram
     return STUN_DAMAGE if @program_name == BLACKOUT
     return PHYSICAL_DAMAGE if @program_name == BLACK_HAMMER
     nil
+  end
+
+  def as_json
+    {
+      game_id: game_id,
+      rating: rating,
+      program_name: program_name,
+    }
   end
 end
