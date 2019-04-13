@@ -298,4 +298,8 @@ Devise.setup do |config|
   # config.sign_in_after_change_password = true
   # config.omniauth :google_oauth2, Rails.application.credentials.google_oauth2[:id], Rails.application.credentials.google_oauth2[:secret], strategy_class: OmniAuth::Strategies::GoogleOauth2
   # config.omniauth :facebook,  Rails.application.credentials.facebook[:id], Rails.application.credentials.facebook[:secret], info_fields: 'name,email'
+
+  if Rails.env.development?
+    config.omniauth :developer, :fields => [:first_name, :last_name], :uid_field => :last_name
+  end
 end

@@ -1,0 +1,7 @@
+<div>
+  YOU ARE NOT SIGNED IN
+
+<% if Rails.env.development? %>
+  <%= link_to("Local Dev sign in", user_developer_omniauth_authorize_path) %>
+<% end %>
+</div>

@@ -2,7 +2,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :registerable,
-         :omniauthable, omniauth_providers: [:google_oauth2, :facebook]
+         :omniauthable, omniauth_providers: [:google_oauth2, :facebook, :developer]
 
   def self.from_omniauth(omniauth_data)
     user = User.where(email: omniauth_data['email']).first
@@ -17,9 +17,5 @@ class User < ApplicationRecord
       )
     end
     user
-  end
-
-  def active_for_authentication?
-    super && discarded_at.nil?
   end
 end
