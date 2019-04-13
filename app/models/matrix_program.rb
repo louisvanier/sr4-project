@@ -22,6 +22,9 @@ class MatrixProgram
 
   attr_reader :game_id
 
+  def initialize
+  end
+
   def initialize(rating:, program_name:)
     @rating = rating
     @program_name = program_name
