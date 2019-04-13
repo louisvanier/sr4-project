@@ -44,8 +44,8 @@
       <ul>
         <%= form.fields_for :programs do |matrix_program_form| %>
           <li>
-            <%= matrix_program_form.label :name %>
-            <%= matrix_program_form.select(:name, MatrixProgram.constants.map { |prog| [prog, prog]}) %>
+            <%= matrix_program_form.label :program_name %>
+            <%= matrix_program_form.select(:program_name, MatrixProgram.constants.sort.map { |prog| [prog, prog]}) %>
             <%= matrix_program_form.label :rating %>
             <%= matrix_program_form.number_field :rating, in: 1..6, step: 1 %>
           </li>

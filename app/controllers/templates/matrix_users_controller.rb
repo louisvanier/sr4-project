@@ -14,7 +14,9 @@ class Templates::MatrixUsersController < ApplicationController
 
   # GET /templates/matrix_users/new
   def new
-    @templates_matrix_user = Templates::MatrixUser.new
+    @templates_matrix_user = Templates::MatrixUser.new(programs: [], name: 'johnny')
+    byebug
+    puts 'debug'
   end
 
   # GET /templates/matrix_users/1/edit
@@ -69,6 +71,18 @@ class Templates::MatrixUsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def templates_matrix_user_params
-      params.fetch(:templates_matrix_user, {})
+      params.require(:templates_matrix_user).permit(
+        :name,
+        :reaction,
+        :intuition,
+        :logic,
+        :willpower,
+        :computer,
+        :cybercombat,
+        :data_search,
+        :electronic_warfare,
+        :hacking,
+        programs_attributes: [:program_name, :rating]
+      )
     end
 end
