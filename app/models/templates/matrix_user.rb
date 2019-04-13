@@ -1,5 +1,5 @@
 class Templates::MatrixUser < ApplicationRecord
-  serialize :programs, Array
+  has_many :matrix_program, as: :has_programs
   belongs_to :user, optional: true
 
   validates :name, presence: true

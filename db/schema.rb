@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_13_141651) do
+ActiveRecord::Schema.define(version: 2019_04_13_190758) do
+
+  create_table "templates_matrix_programs", force: :cascade do |t|
+    t.string "name"
+    t.integer "rating"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "has_programs_id"
+    t.integer "has_programs_type"
+    t.index ["has_programs_id", "has_programs_type"], name: "index_templates_matrix_programs_on_has_programs"
+  end
 
   create_table "templates_matrix_users", force: :cascade do |t|
     t.integer "user_id"
@@ -24,7 +34,6 @@ ActiveRecord::Schema.define(version: 2019_04_13_141651) do
     t.integer "data_search"
     t.integer "electronic_warfare"
     t.integer "hacking"
-    t.text "programs"
     t.string "access_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

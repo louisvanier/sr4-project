@@ -24,10 +24,10 @@ const TemplateMatrixUserList = (props) => {
           <legend>Programs</legend>
           <ul>
             {
-              user.programs.map((program) => {
+              user.matrix_program.map((program) => {
                 return (
                   <li>
-                    {program.program_name} ({program.rating})
+                    {program.name} ({program.rating})
                   </li>
                 )
               })

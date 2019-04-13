@@ -3,6 +3,7 @@ class Api::V1::TemplatesMatrixUsersController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    render json: Templates::MatrixUser.where(user_id: current_user.id)
+    users = Templates::MatrixUser.where(user_id: current_user.id).includes(:matrix_program)
+    render json: users.to_json(include: :matrix_program)
   end
 end
