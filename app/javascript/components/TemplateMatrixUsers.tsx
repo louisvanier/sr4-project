@@ -1,12 +1,15 @@
-import React from "react"
-import PropTypes from "prop-types"
+import * as React from "react"
 import TemplateMatrixUserList from './TemplateMatrixUserList'
 
 export interface TemplateMatrixUsersProps {
   matrixUsers: []
 }
 
-class TemplateMatrixUsers extends React.Component<TemplateMatrixUsersProps, {}> {
+export interface TemplateMatrixUsersState {
+  matrixUsers: []
+}
+
+class TemplateMatrixUsers extends React.Component<TemplateMatrixUsersProps, TemplateMatrixUsersState> {
   constructor(props: TemplateMatrixUsersProps) {
     super(props);
     this.state = {

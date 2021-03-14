@@ -1,5 +1,4 @@
-import React from "react"
-import PropTypes from "prop-types"
+import * as React from "react"
 import TemplateMatrixUsers from './TemplateMatrixUsers'
 
 export interface MainProps {
@@ -13,7 +12,7 @@ class Main extends React.Component<MainProps, {}> {
         <h1>
           Shadowrun Matrix project lobby, welcome {this.props.user_name}
         </h1>
-        <TemplateMatrixUsers />
+        <TemplateMatrixUsers matrixUsers={[]}/>
       </div>
     );
   }
