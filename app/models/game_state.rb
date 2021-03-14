@@ -1,4 +1,6 @@
 class GameState
+  class NotAPersonaError <  StandardError; end
+
   attr_reader :nodes,
     :personas,
     :current_actor,
@@ -9,6 +11,7 @@ class GameState
 
   def initialize
     @object_counter = 0
+    @game_objects = []
     @nodes = []
     @personas = []
     @current_actor = []
@@ -40,6 +43,11 @@ class GameState
     known_data_pieces[player] = known_data
   end
 
+  def set_current_actor_by_game_id(persona_game_id)
+    raise NotAPersonaError unless @game_objects[persona_game_id].is_a?(CanCybercombat)
+    @current_actor = @game_objects[persona_game_id]
+  end
+
   def initiative_order
     raise InitiativeNotSetError if personas.any? { |k, v| v.nil? }
 
@@ -50,9 +58,9 @@ class GameState
 
   def available_nodes
     available_nodes = current_actor.nodes_present_in
-    available_nodes.concat(current_actor.nodes_present_in.subscriptions_to_self.select { |sub| !sub.hidden_access? }.map(&:originating_node))
-    available_nodes.concat(current_actor.nodes_present_in.subscriptions_to_others.select { |sub| !sub.hidden_access? }.map(&:destination_node))
-    available_nodes.uniq!
+    available_nodes.concat(current_actor.nodes_present_in.map { |node| node.subscriptions_to_self.select { |sub| !sub.hidden_access? }.map(&:originating_node) }.flatten)
+    available_nodes.concat(current_actor.nodes_present_in.map { |node| node.subscriptions_to_others.select { |sub| !sub.hidden_access? }.map(&:destination_node) }.flatten)
+    available_nodes.uniq
   end
 
   def actions_available
@@ -68,5 +76,6 @@ class GameState
   def add_game_object(game_object)
     return unless game_object.game_id.nil?
     game_object.game_id = ++@object_counter
+    @game_objects[game_object.game_id] = game_object
   end
 end
