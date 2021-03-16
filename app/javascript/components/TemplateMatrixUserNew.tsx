@@ -18,48 +18,50 @@ export function TemplateMatrixUserNew(props: any) {
   }
 
   return (
-    <div style={{display: 'flex'}}>
-      <label>Name</label>
-      <input type="text" {...bindName}></input>
-      <div>
+    <div className="row">
+      <div className="col-sm">
+        <label>Name</label>
+        <input type="text" {...bindName}></input>
+      </div>
+      <div className="col-sm">
         <h3>Attributes</h3>
-        <div>
-          <label>Reaction</label>
+        <div className="form-group">
+          <label className="col-sm-4 control-label">Reaction</label>
           <input type="number" min="1" max="9" step="1" defaultValue="1"  {...bindReaction}></input>
         </div>
-        <div>
-          <label>Intuition</label>
+        <div className="form-group control-label">
+          <label className="col-sm-4">Intuition</label>
           <input type="number" min="1" max="9" step="1" defaultValue="1" {...bindIntuition}></input>
         </div>
-        <div>
-          <label>Logic</label>
+        <div className="form-group control-label">
+          <label className="col-sm-4">Logic</label>
           <input type="number" min="1" max="9" step="1" defaultValue="1" {...bindLogic}></input>
         </div>
-        <div>
-          <label>Willpower</label>
+        <div className="form-group control-label">
+          <label className="col-sm-4">Willpower</label>
           <input type="number" min="1" max="9" step="1" defaultValue="1" {...bindWillpower}></input>
         </div>
       </div>
-      <div>
+      <div className="col-sm">
         <h3>Skills</h3>
-        <div>
-          <label>Computer</label>
+        <div className="form-group">
+          <label className="col-sm-6 control-label">Computer</label>
           <input type="number" min="1" max="6" step="1" defaultValue="1" {...bindComputer}></input>
         </div>
-        <div>
-          <label>Cybercombat</label>
+        <div className="form-group">
+          <label className="col-sm-6 control-label">Cybercombat</label>
           <input type="number" min="1" max="6" step="1" defaultValue="1" {...bindCybercombat}></input>
         </div>
-        <div>
-          <label>Data search</label>
+        <div className="form-group">
+          <label className="col-sm-6 control-label">Data search</label>
           <input type="number" min="1" max="6" step="1" defaultValue="1" {...bindDatasearch}></input>
         </div>
-        <div>
-          <label>Electronic Warfare</label>
+        <div className="form-group">
+          <label className="col-sm-6 control-label">Electronic Warfare</label>
           <input type="number" min="1" max="6" step="1" defaultValue="1" {...bindElectronicwarfare}></input>
         </div>
-        <div>
-          <label>Hacking</label>
+        <div className="form-group">
+          <label className="col-sm-6 control-label">Hacking</label>
           <input type="number" min="1" max="6" step="1" defaultValue="1" {...bindHacking}></input>
         </div>
       </div>

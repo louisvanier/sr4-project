@@ -34,7 +34,7 @@ class TemplateMatrixUsers extends React.Component<TemplateMatrixUsersProps, Temp
 
   render () {
     return (
-      <div>
+      <div className="container">
          <h3>Matrix users</h3>
          <TemplateMatrixUserNew></TemplateMatrixUserNew>
          <TemplateMatrixUserList matrixUsers={this.state.matrixUsers}/>
