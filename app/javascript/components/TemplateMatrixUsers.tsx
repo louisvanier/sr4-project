@@ -1,5 +1,6 @@
 import * as React from "react"
 import TemplateMatrixUserList from './TemplateMatrixUserList'
+import {TemplateMatrixUserNew} from './TemplateMatrixUserNew'
 
 export interface TemplateMatrixUsersProps {
   matrixUsers: []
@@ -35,6 +36,7 @@ class TemplateMatrixUsers extends React.Component<TemplateMatrixUsersProps, Temp
     return (
       <div>
          <h3>Matrix users</h3>
+         <TemplateMatrixUserNew></TemplateMatrixUserNew>
          <TemplateMatrixUserList matrixUsers={this.state.matrixUsers}/>
       </div>
     );
