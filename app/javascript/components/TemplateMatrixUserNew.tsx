@@ -2,6 +2,7 @@ import * as React from "react"
 import {useInput} from '../hooks/useInput'
 import * as yup from 'yup';
 import { ErrorMessage, Field, Formik, Form } from 'formik'
+import API from '../services/api'
 
 export function TemplateMatrixUserNew(props: any) {
   let schema = yup.object().shape({
@@ -12,8 +13,8 @@ export function TemplateMatrixUserNew(props: any) {
     willpower: yup.number().integer().min(1).max(9).required(),
     computer: yup.number().integer().min(0).max(7).required(),
     cybercombat: yup.number().integer().min(0).max(7).required(),
-    datasearch: yup.number().integer().min(0).max(7).required(),
-    electronicwarfare: yup.number().integer().min(0).max(7).required(),
+    dataSearch: yup.number().integer().min(0).max(7).required(),
+    electronicWarfare: yup.number().integer().min(0).max(7).required(),
     hacking: yup.number().integer().min(0).max(7).required(),
   });
 
@@ -25,8 +26,8 @@ export function TemplateMatrixUserNew(props: any) {
     willpower: 1,
     computer: 0,
     cybercombat: 0,
-    datasearch: 0,
-    electronicwarfare: 0,
+    dataSearch: 0,
+    electronicWarfare: 0,
     hacking: 0
   }
 
@@ -35,7 +36,19 @@ export function TemplateMatrixUserNew(props: any) {
       initialValues={initialValues}
       validationSchema={schema}
       onSubmit={(values) => {
-        console.log(values);
+        API.post('/api/v1/templates_matrix_users.json',
+          {templateMatrixUser: values},
+          {
+            credentials: 'same-origin',
+            headers: {
+              'Content-type': 'application/json',
+              'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+          }).then(data => {
+          console.log(data)
+        }).catch(err => {
+          console.log(err);
+        });
       }}
     >
       {(formik) => {
@@ -138,7 +151,7 @@ export function TemplateMatrixUserNew(props: any) {
                     id="datasearch"
                     min="0"
                     max="7"
-                    className={errors.datasearch && touched.datasearch ? 'input-error' : null}
+                    className={errors.dataSearch && touched.dataSearch ? 'input-error' : null}
                   />
                   <ErrorMessage name="datasearch" component="span" className="error" />
                 </div>
@@ -150,7 +163,7 @@ export function TemplateMatrixUserNew(props: any) {
                     id="electronicwarfare"
                     min="0"
                     max="7"
-                    className={errors.electronicwarfare && touched.electronicwarfare ? 'input-error' : null}
+                    className={errors.electronicWarfare && touched.electronicWarfare ? 'input-error' : null}
                   />
                   <ErrorMessage name="electronicwarfare" component="span" className="error" />
                 </div>
